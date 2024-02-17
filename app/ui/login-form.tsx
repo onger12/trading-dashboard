@@ -1,3 +1,6 @@
+'use client'
+ 
+import { useRouter } from 'next/navigation';
 import { lusitana } from '@/app/ui/fonts';
 import {
   AtSymbolIcon,
@@ -5,14 +8,35 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
 
 export default function LoginForm() {
+  const router = useRouter();
+
+  const onSubmit = (e : any) => {
+    e.preventDefault();
+
+    router.push('/dashboard');
+  }
+
+  const onGoDashboard = (e : any) => {
+    e.preventDefault();
+
+    router.push('/dashboard');
+  }
+
+  const onGoLanding = (e : any) => {
+    e.preventDefault();
+
+    router.push('/');
+  }
+
   return (
-    <form className="space-y-3">
+    <form className="space-y-3 w-1/3 shadow-md" onSubmit={onSubmit}>
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
-          Please log in to continue.
+          Por favor, ingrese para continuar.
         </h1>
         <div className="w-full">
           <div>
@@ -20,7 +44,7 @@ export default function LoginForm() {
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
               htmlFor="email"
             >
-              Email
+              Correo
             </label>
             <div className="relative">
               <input
@@ -28,7 +52,7 @@ export default function LoginForm() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="Ingresa tu dirección de correo"
                 required
               />
               <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -39,7 +63,7 @@ export default function LoginForm() {
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
               htmlFor="password"
             >
-              Password
+              Contraseña
             </label>
             <div className="relative">
               <input
@@ -47,7 +71,7 @@ export default function LoginForm() {
                 id="password"
                 type="password"
                 name="password"
-                placeholder="Enter password"
+                placeholder="Ingresa tu contraseña"
                 required
                 minLength={6}
               />
@@ -55,7 +79,8 @@ export default function LoginForm() {
             </div>
           </div>
         </div>
-        <LoginButton />
+        <LoginButton onGoDashboard={onGoDashboard} />
+        <BacktoLandingButton onGoLanding={onGoLanding} />
         <div className="flex h-8 items-end space-x-1">
           {/* Add form errors here */}
         </div>
@@ -64,10 +89,18 @@ export default function LoginForm() {
   );
 }
 
-function LoginButton() {
+function LoginButton({ onGoDashboard } : { onGoDashboard : (e : any) => void }) {
   return (
-    <Button className="mt-4 w-full">
-      Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+    <Button className="mt-4 w-full" onClick={onGoDashboard}>
+      Entrar <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+    </Button>
+  );
+}
+
+function BacktoLandingButton({ onGoLanding } : { onGoLanding : (e : any) => void }) {
+  return (
+    <Button className="mt-4 w-full bg-gray-400 hover:bg-gray-500 active:bg-gray-700" onClick={onGoLanding}>
+      <ArrowLeftIcon className="mr-1 h-5 w-5 text-gray-50" /> Volver
     </Button>
   );
 }
